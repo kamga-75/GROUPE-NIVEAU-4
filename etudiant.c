@@ -78,14 +78,87 @@ void modifier(Etudiant etudiants[], int nb) {
 
 
 // FONCTION 4 : SUPPRIMER UN ÉTUDIANT
+void supprimer(Etudiant etudiants[], int *nb) {
+    char mat[20];
+    int trouve = -1;
+    
+    printf("\n SUPPRESSION \n");
+    printf("Matricule de l'etudiant a supprimer : ");
+    scanf("%s", mat);
+    
+    for (int i = 0; i < *nb; i++) {
+        if (strcmp(etudiants[i].matricule, mat) == 0) {
+            trouve = i;
+            break;
+        }
+    }
+    
+    if (trouve == -1) {
+        printf("Etudiant non trouvé !\n");
+        return;
+    }
+    
+    // Décalage des éléments
+    for (int j = trouve; j < *nb - 1; j++) {
+        etudiants[j] = etudiants[j + 1];
+    }
+    
+    (*nb)--;
+    printf("Etudiant supprime avec succes !\n");
+}
+
 
 
 
 // FONCTION 5 : TRIER PAR NOM
+void trierNom(Etudiant etudiants[], int nb) {
+    Etudiant temp;
+    
+    for (int i = 0; i < nb - 1; i++) {
+        for (int j = i + 1; j < nb; j++) {
+            if (strcmp(etudiants[i].nom, etudiants[j].nom) > 0) {
+                temp = etudiants[i];
+                etudiants[i] = etudiants[j];
+                etudiants[j] = temp;
+            }
+        }
+    }
+    printf("\nListe trieé par nom !\n");
+}
 
 
 // FONCTION 6 : RECHERCHE DICHOTOMIQUE
-
+void rechercheDicho(Etudiant etudiants[], int nb) {
+    char mat[20];
+    int debut = 0, fin = nb - 1, milieu;
+    int trouve = -1;
+    
+    printf("\n RECHERCHE DICHOTOMIQUE \n");
+    printf("Le tableau doit etre trie par matricule !\n");
+    printf("Matricule à rechercher : ");
+    scanf("%s", mat);
+    
+    while (debut <= fin && trouve == -1) {
+        milieu = (debut + fin) / 2;
+        
+        int cmp = strcmp(etudiants[milieu].matricule, mat);
+        
+        if (cmp == 0) {
+            trouve = milieu;
+        } else if (cmp < 0) {
+            debut = milieu + 1;
+        } else {
+            fin = milieu - 1;
+        }
+    }
+    
+    if (trouve == -1) {
+        printf("Etudiant non trouve !\n");
+    } else {
+        printf("Etudiant trouve : %s %s\n", 
+               etudiants[trouve].nom, etudiants[trouve].prenom);
+    }
+}
 
 // FONCTION 7 : CALCULER L'ÂGE
 void calculerAge(Etudiant etudiants[], int nb) {
